@@ -5,16 +5,11 @@ const getOpenAIResponse = async (message) => {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      Authorization: `Bearer ${process.env.OPEN_API_KEY}`, // Use your API key here
+      Authorization: `Bearer ${process.env.OPENAI_API_KEY}`,
     },
     body: JSON.stringify({
-      model: "gpt-40-mini",
-      messages: [
-        {
-          role: "user",
-          content: message,
-        },
-      ],
+      model: "gpt-4o-mini",
+      messages: [{ role: "user", content: message }],
     }),
   };
 
@@ -24,6 +19,12 @@ const getOpenAIResponse = async (message) => {
       options
     );
     const data = await response.json();
+
+    if (!data.choices) {
+      console.error("OpenAI API error:", data);
+      throw new Error(data.error?.message || "No choices returned from API");
+    }
+
     return data.choices[0].message.content;
   } catch (error) {
     console.error("Error:", error);

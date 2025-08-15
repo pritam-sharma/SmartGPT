@@ -1,6 +1,6 @@
 import express from "express";
 import Thread from "../models/Thread.js";
-
+import getOpenAIResponse from "../utils/openai.js";
 const router = express.Router();
 
 //test
@@ -59,3 +59,47 @@ router.delete("/thread:threadId", async (req, res) => {
   }
 });
 export default router;
+
+//post chat route
+router.post("/chat", async (req, res) => {
+  const { threadId, message } = req.body;
+  if (!threadId || !message) {
+    return res
+      .status(400)
+      .json({ error: "Thread ID and message are required" });
+  }
+  try {
+    let thread = await Thread.findOne({ threadId });
+    if (!thread) {
+      //Create new thread in db
+      thread = new Thread({
+        threadId,
+        title: message,
+        messages: [
+          {
+            role: "user",
+            content: message,
+          },
+        ],
+      });
+    } else {
+      thread.messages.push({
+        role: "user",
+        content: message,
+      });
+    }
+    const assistantResponse = await getOpenAIResponse(message);
+    thread.messages.push({
+      role: "assistant",
+      content: assistantResponse,
+    });
+    thread.updatedAt = new Date();
+    await thread.save();
+    res.json({
+      reply: assistantResponse,
+    });
+  } catch (error) {
+    console.log("error", error);
+    return res.status(500).json({ error: "Failed to process chat" });
+  }
+});
