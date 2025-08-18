@@ -8,7 +8,18 @@ function App() {
   const [prompt, setPrompt] = useState("");
   const [reply, setReply] = useState(null);
   const [currThreadId, setCurrThreadId] = useState(uuidv1());
-  const providerValue = { prompt, setPrompt, reply, setReply, currThreadId }; //passing values
+  const [prevChats, setPrevChats] = useState([]); // Initialize prevChats state
+  const [newChat, setNewChat] = useState(true); // State to track new chat button click
+  const providerValue = {
+    prompt,
+    setPrompt,
+    reply,
+    setReply,
+    currThreadId,
+    newChat,
+    prevChats,
+    setPrevChats
+  }; //passing values
   return (
     <div className="app">
       <MyContext.Provider value={providerValue}>
