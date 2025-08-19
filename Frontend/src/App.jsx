@@ -10,6 +10,7 @@ function App() {
   const [currThreadId, setCurrThreadId] = useState(uuidv1());
   const [prevChats, setPrevChats] = useState([]); // Initialize prevChats state
   const [newChat, setNewChat] = useState(true); // State to track new chat button click
+  const [allThreads, setAllThreads] = useState([]); // State to store all threads
   const providerValue = {
     prompt,
     setPrompt,
@@ -18,7 +19,9 @@ function App() {
     currThreadId,
     newChat,
     prevChats,
-    setPrevChats
+    setPrevChats,
+    allThreads,
+    setAllThreads,
   }; //passing values
   return (
     <div className="app">
