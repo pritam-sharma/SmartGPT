@@ -15,6 +15,7 @@ const ChatWindow = () => {
   } = useContext(MyContext);
 
   const [loading, setLoading] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
 
   const getReply = async () => {
     setLoading(true);
@@ -63,6 +64,10 @@ const ChatWindow = () => {
     }
   }, [reply]);
 
+  const handleProfileClick = () => {
+    setIsOpen(!isOpen);
+  };
+
   return (
     <div className="chatWindow">
       <div className="navbar">
@@ -70,12 +75,28 @@ const ChatWindow = () => {
           SmartGPT &nbsp; <i className="fa-solid fa-chevron-down"></i>{" "}
         </span>
 
-        <div className="userIconDiv">
+        <div className="userIconDiv" onClick={handleProfileClick}>
           <span className="userIcon">
             <i className="fa-solid fa-user"></i>
           </span>
         </div>
       </div>
+      {isOpen && (
+        <div className="dropDown">
+          <div className="dropDownItem">
+            <i class="fa-solid fa-cloud-arrow-up"></i>&nbsp; Upgrade Plan
+          </div>
+          <div className="dropDownItem">
+            <i class="fa-solid fa-gear">&nbsp; </i>Settings
+          </div>
+          <div className="dropDownItem">
+            <i class="fa-brands fa-yelp">&nbsp; </i>Help
+          </div>
+          <div className="dropDownItem">
+            <i class="fa-solid fa-right-from-bracket">&nbsp; </i>Logout
+          </div>
+        </div>
+      )}
       <Chat></Chat>
       <ScaleLoader color="#fff" loading={loading}></ScaleLoader>
       <div className="chatInput">

@@ -81,6 +81,6 @@ button:hover {
 }
 
 .highlighted {
-  background-color: rgba(180, 180, 180, 0.05);
+  background-color: rgba(161, 20, 20, 0.05);
   border-radius: 10px;
 }
