@@ -30,22 +30,27 @@ router.get("/thread", async (req, res) => {
 });
 
 //get thread by id
-router.get("/thread:threadId", async (req, res) => {
+router.get("/thread/:threadId", async (req, res) => {
   const { threadId } = req.params;
+
   try {
+    // Find thread by threadId
     const thread = await Thread.findOne({ threadId });
+
     if (!thread) {
       return res.status(404).json({ error: "Thread not found" });
     }
+
+    // Assuming your thread model has messages as JSON
     res.json(thread.messages);
   } catch (error) {
-    console.log("error", error);
+    console.error("Error fetching thread:", error);
     res.status(500).json({ error: "Failed to fetch thread" });
   }
 });
 
 //delete thread
-router.delete("/thread:threadId", async (req, res) => {
+router.delete("/thread/:threadId", async (req, res) => {
   const { threadId } = req.params;
   try {
     const deletedtThread = await Thread.findOneAndDelete({ threadId });
